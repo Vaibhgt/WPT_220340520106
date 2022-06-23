@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script>
+        $(document).ready(()=>{
+            console.log("page loaded");
+            $('#bookid').blur(()=>{
+                console.log("blur event occured")
+                let input={bookid:$('#bookid').val()}
+                let parametertothefunction ={
+                    data:input,
+                    url:'https://localhost:560/getbookname',
+                    type:'get',
+                    datatype:'json',
+                    success:function(datafromserver){
+                        console.log("Data fetched suceessfully")
+                        console.log("data from server");
+                        if(datafromserver.status===true){
+                            $('#book').val(datafromserver.detail.bookname)
+                            $("#msg").text("book found");
+                        }
+                        else{
+                            $('#book').val("");
+                            $('#msg').text("book not found")
+
+                        }
+
+
+                    };
+                    error:function(errorfromserver){
+                        console.log("error occured"+errorfromserver);
+                    }
+
+                }
+                $.ajax(parameterstothefunction)
+            });
+            $(#update).click(()=>{
+                console.log("update button clicked");
+
+                let input={bookid:$('#bookid').val().bookname.$('#book').val()}
+                let parameterstothefunction = {
+                    data:input,
+                    url:'https://localhost:560/updatebookname',
+                    type:'get',
+                    datatype:'json',
+                    success: function (datafromserver){
+                        console.log("data received");
+                        console.log(datafromserver);
+                        if(datafromserver.status===true){
+                            $(#msg).text("book name update");
+                        }
+                        else{
+                            $('#book').val("");
+                            $('#msg').text('book name not update');
+                        }
+                    },
+                    error:function(errorfromserver){
+                        console.log("some error occured"+errorfromserver);
+                    }
+
+                }
+                $.ajax(parameterstothefunction);
+
+            });
+
+        });
+
+
+
+    </script>
+</head>
+<body>
+
+    
+    <span>Book id</span>
+    <input type="number" id="bookid" name="bookname">
+    <span id="msg">message (what happedned book added or not)</span>
+    <br>
+    <span>book name</span>
+    <input type="text" id="book">
+    <br>
+    <span>price</span>
+    <input type="text" id="price">
+    <br>
+    <input type="button" value="update book" id="#update">
+    
+</body>
+</html>
